@@ -17,29 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 
 from django.urls import include, path
-from rest_framework import routers
-from mysite.quickstart import views
+from . import views
 
 
-
-router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    #path('', include(router.urls)),
-    #path('api-auth/', include('rest_framework.urls', namespace='rest_framework',)),
-    #path('swagger/', include('swagger_ui.urls')),
-    path('admin/', admin.site.urls),
-    path('blog/', include('blog.urls')),
-    path('', include('djoser.urls')),#работает
-    path('', include('djoser.urls.jwt')),#не работает
-    path('', include('djoser.urls.authtoken')),#не работает
-    path('reg/', include('regis.urls')),
-
-
+    path('reg/', views.index, name='index'),
 ]
 
 
