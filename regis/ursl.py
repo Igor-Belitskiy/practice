@@ -24,7 +24,7 @@ from . import views
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    path('reg/', views.index, name='index'),
+    path('regis/', views.index, name='index'),
 ]
 
 

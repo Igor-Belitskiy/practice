@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'regis.apps.RegisConfig',
 
 ]
-#AUTH_USER_MODEL = 'core.User'
+
 
 
 MIDDLEWARE = [
