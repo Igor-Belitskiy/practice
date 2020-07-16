@@ -4,14 +4,15 @@ from rest_framework.authtoken.models import Token
 
 
 class UserSerializer(serializers.ModelSerializer):
-    PASSWORD = serializers.CharField(write_only=True, style={'input_type': 'password'})
+    password = serializers.CharField(write_only=True, style={'input_type': 'password'})
+
+    # PASSWORD = serializers.CharField(write_only=True, style={'input_type': 'password'})
 
     class Meta:
 
         model = User
-        fields = ('username', 'password', 'PASSWORD')#,
-        #extra_kwargs = {'password': {'write_only': True}}
-        #extra_kwargs = {'PASSWORD': {'write_only': True}}
+        fields = ('username', 'password')#, 'PASSWORD'
+
 
         def validate(self, attrs):
             data = super(UserSerializer, self).validate(attrs)
