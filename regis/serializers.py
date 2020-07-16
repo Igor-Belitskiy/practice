@@ -16,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
         def validate(self, attrs):
             data = super(UserSerializer, self).validate(attrs)
             if data['password'] != data['PASSWORD']:
-                raise serializers.ValidationError('Password mismatch')
+                raise serializers.ValidationError('Пароли не совподают')
             del data['PASSWORD']
             return data
 
