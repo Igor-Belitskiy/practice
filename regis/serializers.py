@@ -5,13 +5,12 @@ from rest_framework.authtoken.models import Token
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, style={'input_type': 'password'})
-
-    # PASSWORD = serializers.CharField(write_only=True, style={'input_type': 'password'})
+    PASSWORD = serializers.CharField(write_only=True, style={'input_type': 'password'})
 
     class Meta:
 
         model = User
-        fields = ('username', 'password')#, 'PASSWORD'
+        fields = ('username', 'password', 'PASSWORD')#
 
 
         def validate(self, attrs):
@@ -34,5 +33,5 @@ class UserSerializerlogin(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'password')  # ,'password2'
+        fields = ('username', 'password')
         extra_kwargs = {'password': {'write_only': True}}
