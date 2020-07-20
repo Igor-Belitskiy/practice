@@ -1,33 +1,40 @@
-from rest_framework import serializers
+from rest_framework import serializers, request
 from django.contrib.auth.models import User
-from rest_framework.authtoken.models import Token
+
+from rest_framework.permissions import IsAuthenticated
 
 
-class UserSerializer(serializers.ModelSerializer):
+
+
+class UserSerializer(serializers.Serializer):
+    model = User
+    username = serializers.CharField(max_length=100)
     password = serializers.CharField(write_only=True, style={'input_type': 'password'})
     PASSWORD = serializers.CharField(write_only=True, style={'input_type': 'password'})
 
-    class Meta:
+    permission_classes = (IsAuthenticated,)
 
-        model = User
-        fields = ('username', 'password', 'PASSWORD')#
+    def validate(self, attrs):
+        data = super(UserSerializer, self).validate(attrs)
+        if data['password'] != data['PASSWORD']:
+            raise serializers.ValidationError('Пароли не совподают!')
+        del data['PASSWORD']
+        return data
+
+    def save(self):
+        username=self.validated_data['username']
+        password=self.validated_data['password']
+        u=User.objects.create_user(username)
+        u.set_password(password)
+        u.save()
 
 
-        def validate(self, attrs):
-            data = super(UserSerializer, self).validate(attrs)
-            if data['password'] != data['PASSWORD']:
-                raise serializers.ValidationError('Пароли не совподают!')
-            del data['PASSWORD']
-            return data
 
-        def create(self, validated_data):
-            user = User(
-                username=validated_data['username']
-            )
-            user.set_password(validated_data['password'])
-            user.save()
-            Token.objects.create(user=user)
-            return user
+
+
+
+
+
 
 class UserSerializerlogin(serializers.ModelSerializer):
 

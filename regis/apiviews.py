@@ -1,13 +1,9 @@
-
 from rest_framework import generics
 from regis.serializers import UserSerializer,UserSerializerlogin
 from rest_framework import status
-
 from django.contrib.auth.models import User
-
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from django.contrib.auth import authenticate
 
 class LoginView(APIView):
@@ -25,8 +21,6 @@ class LoginView(APIView):
             return Response({"token": user.auth_token.key})
         else:
             return Response({"Ошибка ввода": "Неправильные учетные данные"}, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 
 
