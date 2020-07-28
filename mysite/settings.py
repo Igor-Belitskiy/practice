@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'djoser',
     'swagger_ui',
     'regis.apps.RegisConfig',
-    'rest_framework.authtoken',
+    'rest_framework.authtoken'
 
 
 ]

@@ -22,6 +22,8 @@ from mysite.quickstart import views
 
 
 
+
+
 """
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -30,15 +32,17 @@ router.register(r'groups', views.GroupViewSet)
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    #path('', include(router.urls)),
-    path('login', include('rest_framework.urls', namespace='rest_framework',)),
-    #path('swagger/', include('swagger_ui.urls')),
+
+    #path('login', include('rest_framework.urls', namespace='rest_framework',)),
+    path('', include('regis.urls')),
+
     path('admin/', admin.site.urls),
     #path('blog/', include('blog.urls')),
     #path('', include('djoser.urls')),#работает
     #path('', include('djoser.urls.jwt')),#не работает
     #path('', include('djoser.urls.authtoken')),#не работает
-    path('', include('regis.urls')),
+    #path('', include(router.urls)),
+    #path('swagger/', include('swagger_ui.urls')),
 
 
 ]
