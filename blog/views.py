@@ -9,7 +9,7 @@ from .models import Post
 from django.shortcuts import render
 from .pagination import CustomPagination
 from blog.models import Post
-from rest_framework.generics import  ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
 from .serializers import ArticleSerializer, ArticlelistSerializer
 from .permission import IsOwnerOrReadOnly
 
