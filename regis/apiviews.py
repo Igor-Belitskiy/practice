@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import generics
 from rest_framework.authentication import TokenAuthentication
 from regis.serializers import UserSerializer,UserSerializerlogin
@@ -47,6 +48,5 @@ class LogoutView(APIView):
     def post(self, request):
         django_logout(request)
         return Response(status=204)
-
 
 
