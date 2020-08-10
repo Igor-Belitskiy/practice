@@ -1,5 +1,4 @@
 from rest_framework import generics
-from rest_framework.authentication import TokenAuthentication
 from regis.serializers import UserSerializer,UserSerializerlogin
 from rest_framework import status
 from django.contrib.auth.models import User
@@ -7,14 +6,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
-from django.contrib.auth import logout as django_logout
-
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 class LoginView(APIView):
 
     queryset = User.objects.all()
     serializer_class = UserSerializerlogin
-    permission_classes = ()
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
@@ -42,11 +40,12 @@ class UserCreate(generics.CreateAPIView):
         else:
             return Response({"Ошибка ввода": "Неправильные учетные данные"}, status=status.HTTP_400_BAD_REQUEST)
 
-class LogoutView(APIView):
-    authentication_classes = (TokenAuthentication, )
-    def post(self, request):
-        django_logout(request)
-        return Response(status=204)
+
+
+
+
+
+
 
 
 

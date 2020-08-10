@@ -18,31 +18,24 @@ from django.urls import path, include
 
 from django.urls import include, path
 from rest_framework import routers
-from mysite.quickstart import views
 
 
-
-
-
-"""
 router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
-"""
+
+#router.register(r'users', LoginView)
+#router.register(r'groups', UserCreate)
+
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-
-    #path('login', include('rest_framework.urls', namespace='rest_framework',)),
-    path('', include('regis.urls')),
-
     path('admin/', admin.site.urls),
-    #path('blog/', include('blog.urls')),
-    #path('', include('djoser.urls')),#работает
-    #path('', include('djoser.urls.jwt')),#не работает
-    #path('', include('djoser.urls.authtoken')),#не работает
-    #path('', include(router.urls)),
-    #path('swagger/', include('swagger_ui.urls')),
+    path('api/', include('regis.urls')),
+
+    path('blog/', include('blog.urls')),
+    path('', include(router.urls)),
+
+
+
 
 
 ]
