@@ -18,23 +18,20 @@ from django.urls import path, include
 
 from django.urls import include, path
 from rest_framework import routers
+from rest_framework.routers import DefaultRouter
+from rest_framework import renderers
+
 
 
 router = routers.DefaultRouter()
-
-#router.register(r'users', LoginView)
-#router.register(r'groups', UserCreate)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('regis.urls')),
-
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('blog/', include('blog.urls')),
-    path('', include(router.urls)),
-
-
 
 
 

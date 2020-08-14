@@ -1,22 +1,25 @@
 from django.utils import timezone
 from django.shortcuts import render
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+
 from .forms import PostForm
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import get_object_or_404, UpdateAPIView
-
+from rest_framework.response import Response
 from .models import Post
 from django.shortcuts import render
 from .pagination import CustomPagination
 from blog.models import Post
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
-from .serializers import ArticleSerializer, ArticlelistSerializer
+from .serializers import ArticleSerializer
 from .permission import IsOwnerOrReadOnly
-
+from rest_framework.decorators import action
 # Create your views here.
-
-
-
+from rest_framework import viewsets
+from rest_framework import renderers
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication,TokenAuthentication
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
@@ -48,34 +51,12 @@ def post_edit(request, pk):
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
-
-class ArticleViewPut(UpdateAPIView,ListAPIView):
+class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
     queryset = Post.objects.all()
-    permission_classes = (IsOwnerOrReadOnly,)
+    permission_classes = (IsOwnerOrReadOnly, IsAuthenticated)
     pagination_class = CustomPagination
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
-
-class ArticleViewGet(ListAPIView):
-    '''
-    get
-    '''
-    serializer_class = ArticlelistSerializer
-    queryset = Post.objects.all()
-    permission_classes = (IsOwnerOrReadOnly,)
-    pagination_class = CustomPagination
-
-class ArticleViewPost(CreateAPIView,ListAPIView):
-    serializer_class = ArticleSerializer
-    queryset = Post.objects.all()
-    permission_classes = (IsOwnerOrReadOnly,)
-    pagination_class = CustomPagination
-
-class ArticleViewDel(DestroyAPIView,ListAPIView):
-    serializer_class = ArticleSerializer
-    queryset = Post.objects.all()
-    permission_classes = (IsOwnerOrReadOnly,)
-    #pagination_class = CustomPagination
