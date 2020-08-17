@@ -1,26 +1,19 @@
+import django_filters
 from django.utils import timezone
-from django.shortcuts import render
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
-
+from rest_framework.permissions import IsAuthenticated
 from .forms import PostForm
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import get_object_or_404, UpdateAPIView
 from rest_framework.response import Response
-from .models import Post
 from django.shortcuts import render
 from .pagination import CustomPagination
 from blog.models import Post
-from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
 from .serializers import ArticleSerializer
 from .permission import IsOwnerOrReadOnly
-from rest_framework.decorators import action
-# Create your views here.
 from rest_framework import viewsets
-from rest_framework import renderers
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication,TokenAuthentication
-
+from rest_framework import filters
+from django.db.models import Q
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'blog/post_list.html', {'posts': posts})
@@ -51,12 +44,22 @@ def post_edit(request, pk):
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
+
 class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
     queryset = Post.objects.all()
     permission_classes = (IsOwnerOrReadOnly, IsAuthenticated)
     pagination_class = CustomPagination
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['author__username']
+    ordering_fields = ['published_date']
 
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+
+    def get_queryset(self):
+        user = self.request.user
+        return Post.objects.filter(Q(publication=True) | Q(author = user))
+
+
+
+
 

@@ -50,12 +50,13 @@ class UserCreate(generics.CreateAPIView):
             return Response("Пользователь существует")
 
 class Logout(APIView):
-    #permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     def get(self, request, format=None):
         try:
             logout(request)
             request.user.auth_token.delete()
             return Response(status=status.HTTP_200_OK)
-        except:
-            return Response('Токен уже удалён')
+        except AttributeError:
+            return Response (status=status.HTTP_404_NOT_FOUND)
+
 

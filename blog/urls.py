@@ -3,7 +3,7 @@ from . import views
 from rest_framework import renderers
 
 article_list = views.ArticleViewSet.as_view({
-    'get': 'list',
+    #'get': 'list',
     'post': 'create'
 })
 article_detail = views.ArticleViewSet.as_view({
