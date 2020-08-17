@@ -4,8 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from .forms import PostForm
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
-from rest_framework.generics import get_object_or_404, UpdateAPIView
-from rest_framework.response import Response
+from rest_framework.generics import get_object_or_404
 from django.shortcuts import render
 from .pagination import CustomPagination
 from blog.models import Post
@@ -44,7 +43,6 @@ def post_edit(request, pk):
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
-
 class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
     queryset = Post.objects.all()
@@ -54,10 +52,9 @@ class ArticleViewSet(viewsets.ModelViewSet):
     search_fields = ['author__username']
     ordering_fields = ['published_date']
 
-
     def get_queryset(self):
         user = self.request.user
-        return Post.objects.filter(Q(publication=True) | Q(author = user))
+        return Post.objects.filter(Q(publication=True) | Q(author=user))
 
 
 
